@@ -3,7 +3,7 @@ package test;
 import companie.*;
 import java.util.Random;
 import exc.*;
-import iterator.*;
+import selector.Selector;
 
 public class Test {
 
@@ -12,11 +12,11 @@ public class Test {
         Random random = new Random();
         int nivel_competenta = 0;
 
-        for(int i = 0; i < 20; i++) {
+        for (int i = 0; i < 20; i++) {
             nivel_competenta = random.nextInt(11);
 
             try {
-                if(nivel_competenta < 5) {
+                if (nivel_competenta < 5) {
                     throw new NivelCompetentaInvalid();
                 }
 
@@ -26,11 +26,13 @@ public class Test {
             }
         }
 
-        Iterator iterator = companie.iterator();
+        Selector selector = companie.selector();
 
-        while(!iterator.end()) {
-            System.out.println(iterator.current() + " ");
-            iterator.next();
+        System.out.println("\n Urmeaza iteratorul:\n");
+
+        while (!selector.end()) {
+            System.out.println(selector.current() + " ");
+            selector.next();
         }
     }
 }

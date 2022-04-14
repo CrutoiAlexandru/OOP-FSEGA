@@ -1,7 +1,7 @@
 package companie;
 
 import om.*;
-import iterator.*;
+import selector.*;
 
 public class Companie {
     private Persoana[] persoane;
@@ -9,19 +9,19 @@ public class Companie {
 
     public Companie(int size) {
         persoane = new Persoana[size];
-    } 
+    }
 
     public void add(int tip, int i, int nivel_competenta) {
-        if(tip == 0) {
+        if (tip == 0) {
             persoane[next++] = new Muncitor("N" + i, "P" + i, nivel_competenta);
         } else {
             persoane[next++] = new Vanzator("N" + i, "P" + i, nivel_competenta);
         }
     }
 
-    private class CompanieIterator implements Iterator {
+    private class CompanieSelector implements Selector {
         private int i = 0;
-        
+
         public boolean end() {
             return i == persoane.length;
         }
@@ -31,12 +31,12 @@ public class Companie {
         }
 
         public void next() {
-            if(i < persoane.length) 
+            if (i < persoane.length)
                 i++;
         }
     }
 
-    public Iterator iterator() {
-        return new CompanieIterator();
+    public Selector selector() {
+        return new CompanieSelector();
     }
 }

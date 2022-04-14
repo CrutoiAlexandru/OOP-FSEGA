@@ -1,7 +1,5 @@
 package om;
 
-import exc.*;
-
 public class Persoana {
     String nume;
     String prenume;
@@ -12,5 +10,4 @@ public class Persoana {
         this.prenume = prenume;
         this.nivel_competenta = nivel_competenta;
     }
-
 }
