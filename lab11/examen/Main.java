@@ -65,8 +65,8 @@ class Aeroport {
         return listaAvioane.get(i);
     }
 
-    public void adaugaAvion(Aeronava avion) {
-        listaAvioane.add(avion);
+    public void adaugaAvion(AvionFactory avion, String destinatie) {
+        avion.createAvion(destinatie);
     }
 
     public int nrAvioane() {
@@ -75,15 +75,10 @@ class Aeroport {
 }
 
 class Client {
-    Aeroport aeroport;
-    boolean found = false;
-    int nrDestinatii = 0;
+    public void search(String destinatie, Aeroport aeroport) {
+        boolean found = false;
+        int nrDestinatii = 0;
 
-    Client(Aeroport aeroport) {
-        this.aeroport = aeroport;
-    }
-
-    public void search(String destinatie) {
         for (int i = 0; i < aeroport.nrAvioane(); i++) {
             if (destinatie.compareToIgnoreCase(aeroport.getAvion(i).getDestination()) == 0) {
                 found = true;
@@ -95,16 +90,15 @@ class Client {
             if (!found) {
                 throw new NoDestinationFound();
             }
-            System.out.println("Nr destinatii gasite:" + nrDestinatii);
+            System.out.println("Nr avioane cu destinatia gasita: " + nrDestinatii);
         } catch (NoDestinationFound e) {
-            e.printStackTrace();
         }
 
     }
 }
 
 class NoDestinationFound extends Exception {
-    public void printStackTrace() {
+    NoDestinationFound() {
         System.out.println("No destination found!");
     }
 }
@@ -113,7 +107,7 @@ public class Main {
 
     public static void main(String[] args) {
         Aeroport aeroport = new Aeroport();
-        Client client = new Client(aeroport);
+        Client client = new Client();
         Random rand = new Random();
         Scanner scanner = new Scanner(System.in);
         String wantedDestination;
@@ -130,13 +124,15 @@ public class Main {
 
         for (int i = 0; i < 20; i++) {
             if (rand.nextInt(2) == 1) {
-                aeroport.adaugaAvion(new AvionCargo(listaDestinatii.get(rand.nextInt(listaDestinatii.size()))));
+                aeroport.adaugaAvion(new AvionCargoFactory(),
+                        listaDestinatii.get(rand.nextInt(listaDestinatii.size())));
             } else {
-                aeroport.adaugaAvion(new AvionPersoane(listaDestinatii.get(rand.nextInt(listaDestinatii.size()))));
+                aeroport.adaugaAvion(new AvionPersoaneFactory(),
+                        listaDestinatii.get(rand.nextInt(listaDestinatii.size())));
             }
         }
 
-        client.search(wantedDestination);
+        client.search(wantedDestination, aeroport);
 
         System.out.println();
 
